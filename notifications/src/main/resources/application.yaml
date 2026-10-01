@@ -1,0 +1,20 @@
+spring:
+
+  application:
+    name: notifications
+
+  main:
+    web-application-type: NONE
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+app:
+
+  consumer:
+    concurrency: 3
+    group-id: "order_notifications"
+    topic-name: "sent_orders"
+    backoff-ms: 300
+    max-retry-attempts: 5
+

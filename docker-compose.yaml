@@ -1,0 +1,18 @@
+services:
+  kafka:
+    image: apache/kafka:4.2.0  # Укажите нужную версию образа
+    container_name: kafka
+    ports:
+      - "9092:9092"  # Порт для клиентских подключений
+      - "9093:9093"  # Порт для контроллера (внутренний трафик)
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller  # Брокер и контроллер
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093  # Прослушиватели
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092  # Адрес для клиентов
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER  # Имя контроллера
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:plaintext,CONTROLLER:plaintext  # Безопасность
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093  # Кворум голосов для контроллера
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1  # Фактор репликации для служебных топиков
+    volumes:
+      - ./kafka-data:/var/lib/kafka/data  # Том для хранения данных (критично, чтобы не потерять при перезапуске)

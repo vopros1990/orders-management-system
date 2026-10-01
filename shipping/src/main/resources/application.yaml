@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: shipping
+
+  main:
+    web-application-type: NONE
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      acks: 1
+      retries: 5
+      properties:
+        retry.backoff.ms: 300
+        delivery.timeout.ms: 5000
+
+app:
+
+  consumer:
+    concurrency: 3
+    group-id: "order_shipping"
+    topic-name: "payed_orders"
+    backoff-ms: 300
+    max-retry-attempts: 5
+
+  producer:
+    topic-name: "sent_orders"
+    partitions: 3
+    replicas: 1
+
